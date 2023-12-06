@@ -1,6 +1,7 @@
 import Navigation from "@/components/Navigation";
 import SingnOut from "@/components/SignOut";
 import TodoAdd from "@/components/TodoAdd";
+import TodosList from "@/components/TodoList";
 import { Database } from "@/db/database.types";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
@@ -12,6 +13,8 @@ export default function Home() {
       <Navigation />
 
       <TodoAdd />
+      <TodosList />
+      
       {/* <SingnOut /> */}
     </main>
   );
