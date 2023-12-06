@@ -1,11 +1,11 @@
 {
-  "id": "b01c8345-9db0-4631-b05c-f301154483d3",
+  "id": "d987dbd9-e892-4aff-949f-d9a34932808e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
   "tables": {
-    "users": {
-      "name": "users",
+    "todos": {
+      "name": "todos",
       "schema": "",
       "columns": {
         "id": {
@@ -14,15 +14,21 @@
           "primaryKey": true,
           "notNull": true
         },
-        "full_name": {
-          "name": "full_name",
+        "title": {
+          "name": "title",
           "type": "text",
           "primaryKey": false,
           "notNull": false
         },
-        "phone": {
-          "name": "phone",
-          "type": "varchar(256)",
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         }

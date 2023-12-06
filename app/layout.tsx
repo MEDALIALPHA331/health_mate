@@ -4,8 +4,6 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ui/theme-switcher";
 import "./globals.css";
 
-const inter = FontSans({ subsets: ["latin"] });
-
 export const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
