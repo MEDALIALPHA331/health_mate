@@ -9,7 +9,7 @@ import type { Database } from "@/db/database.types";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+
   const router = useRouter();
   const supabase = createClientComponentClient<Database>();
 
@@ -51,9 +51,8 @@ export default function Login() {
         onChange={(e) => setPassword(e.target.value)}
         value={password}
       />
-      <button onClick={handleSignUp}>Sign up</button>
+      {/* <button onClick={handleSignUp}>Sign up</button> */}
       <button onClick={handleSignIn}>Sign in</button>
-      <button onClick={handleSignOut}>Sign out</button>
     </div>
   );
 }

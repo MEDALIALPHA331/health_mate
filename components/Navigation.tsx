@@ -8,8 +8,6 @@ export default function Navigation() {
       <div className="ml-auto">
         <ModeToggle />
       </div>
-
-      <div className="pt-20">hey wanna login?</div>
     </nav>
   );
 }
