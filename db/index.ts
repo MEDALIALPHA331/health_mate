@@ -9,4 +9,4 @@ const db = drizzle(client);
 
 await migrate(db, { migrationsFolder: "drizzle" });
 
-const allUsers = await db.select().from(users);
+// const allUsers = await db.select().from(users);
