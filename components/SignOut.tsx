@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { supabase } from "@supabase/auth-ui-shared";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import Out from "./icons/Out";
 
 const SingnOut = () => {
   const router = useRouter();
@@ -15,10 +16,10 @@ const SingnOut = () => {
 
   return (
     <Button
-      className="bg-rose-400 transition-colors duration-100 ease-linear hover:bg-rose-200"
+      className="transition-colors duration-100 ease-linear hover:bg-rose-400 dark:hover:bg-rose-200"
       onClick={handleSignOut}
     >
-      Sign out
+      <Out />
     </Button>
   );
 };

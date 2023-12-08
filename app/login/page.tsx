@@ -72,12 +72,15 @@ export default async function Login({
     return redirect("/login?message=Check email to continue sign in process");
   };
 
+  //TODO: use useFormStatus to add a loading state
+  //TODO: add OAuth
+
   return (
-    <main className="flex w-full flex-1 flex-col justify-center gap-2 px-8 sm:max-w-md">
+    <main className="flex w-full flex-1 flex-col justify-center gap-2 px-8 ">
       <Navigation>
         <Link
           href="/landing"
-          className="bg-btn-background hover:bg-btn-background-hover group left-8 top-8 flex items-center rounded-md px-4 py-2 text-sm text-foreground no-underline"
+          className=" group flex items-center rounded-md px-4 py-2 text-sm text-foreground md:left-8 md:top-8"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -98,7 +101,7 @@ export default async function Login({
       </Navigation>
 
       <form
-        className="flex w-full flex-1 flex-col justify-center gap-2 text-foreground animate-in"
+        className="mx-auto flex w-full flex-1 flex-col justify-center gap-2 text-foreground animate-in sm:max-w-md"
         action={signIn}
       >
         <label className="text-md" htmlFor="email">
@@ -120,7 +123,7 @@ export default async function Login({
           placeholder="••••••••"
           required
         />
-        <button className="mb-2 rounded-md bg-green-700 px-4 py-2 text-foreground">
+        <button className="mb-2 rounded-md bg-teal-400 px-4 py-2 text-foreground">
           Sign In
         </button>
         <button

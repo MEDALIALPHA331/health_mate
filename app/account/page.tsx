@@ -1,12 +1,12 @@
 import AccountForm from "@/components/AccountForm";
-import Navigation from "@/components/Navigation";
 import SingnOut from "@/components/SignOut";
 import TodoAdd from "@/components/TodoAdd";
 import TodosList from "@/components/TodoList";
+
 import { Database } from "@/db/database.types";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default async function Home() {
   const supabase = createServerComponentClient<Database>({ cookies });
@@ -16,19 +16,19 @@ export default async function Home() {
   } = await supabase.auth.getSession();
 
   if (!session) {
-    redirect("/login");
+    return;
   }
 
   return (
     <main className="flex min-h-screen flex-col items-center p-4">
-      <Navigation />
+      <AccountForm session={session!} />
 
-      <AccountForm session={session} />
+      <Link className="" href="/account/stats">
+        Stats
+      </Link>
 
       {/* <TodoAdd />
       <TodosList /> */}
-
-      <SingnOut />
     </main>
   );
 }
