@@ -2,13 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
-import { clientSupabase } from "@/utils";
+import { supabase } from "@supabase/auth-ui-shared";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const SingnOut = () => {
   const router = useRouter();
 
   const handleSignOut = async () => {
-    await clientSupabase.auth.signOut();
+    await createClientComponentClient().auth.signOut();
     router.refresh();
   };
 

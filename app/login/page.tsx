@@ -1,79 +1,142 @@
-"use client";
-
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import {
+  createClientComponentClient,
+  createServerComponentClient,
+} from "@supabase/auth-helpers-nextjs";
+import { redirect, useRouter } from "next/navigation";
 
 import type { Database } from "@/db/database.types";
 import Navigation from "@/components/Navigation";
+import { cookies, headers } from "next/headers";
+import AuthForm from "@/components/AuthForm";
 
-export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+import Link from "next/link";
+import { createClient } from "@/utils/supabase/server";
 
-  const router = useRouter();
-  const supabase = createClientComponentClient<Database>();
+export default async function Login({
+  searchParams,
+}: {
+  searchParams: { message: string };
+}) {
+  const cookieStore = cookies();
+  const supabase = createServerComponentClient({ cookies: () => cookieStore });
 
-  const handleSignUp = async () => {
-    await supabase.auth.signUp({
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (session) {
+    redirect("/account");
+  }
+
+  const signIn = async (formData: FormData) => {
+    "use server";
+
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      return redirect("/login?message=Could not authenticate user");
+    }
+
+    return redirect("/");
+  };
+
+  const signUp = async (formData: FormData) => {
+    "use server";
+
+    const origin = headers().get("origin");
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const cookieStore = cookies();
+    const supabase = createClient(cookieStore);
+
+    const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${location.origin}/auth/callback`,
+        emailRedirectTo: `${origin}/auth/callback`,
       },
     });
-    router.refresh();
+
+    if (error) {
+      return redirect("/login?message=Could not authenticate user");
+    }
+
+    return redirect("/login?message=Check email to continue sign in process");
   };
 
-  const handleSignIn = async () => {
-    await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    router.refresh();
-  };
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    router.refresh();
-  };
-
-  const checkAuthed = async () => {
-    const user = await supabase.auth.getUser();
-    return user?.data?.user;
-  };
-
-  //!this is just a work arround
-  useEffect(() => {
-    checkAuthed()
-      .then((user) => {
-        if (user != null) {
-          router.push("/");
-        }
-      })
-      .catch(console.error);
-  }, []);
-
-  //decompose this into three components, based on user auth
   return (
-    <div className="p-4">
-      <Navigation />
-      <form action="" className="flex w-40 flex-grow-0 flex-col gap-3">
+    <main className="flex w-full flex-1 flex-col justify-center gap-2 px-8 sm:max-w-md">
+      <Navigation>
+        <Link
+          href="/landing"
+          className="bg-btn-background hover:bg-btn-background-hover group left-8 top-8 flex items-center rounded-md px-4 py-2 text-sm text-foreground no-underline"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>{" "}
+          Back
+        </Link>
+      </Navigation>
+
+      <form
+        className="flex w-full flex-1 flex-col justify-center gap-2 text-foreground animate-in"
+        action={signIn}
+      >
+        <label className="text-md" htmlFor="email">
+          Email
+        </label>
         <input
-          type="email"
+          className="mb-6 rounded-md border bg-inherit px-4 py-2"
           name="email"
-          onChange={(e) => setEmail(e.target.value)}
-          value={email}
+          placeholder="you@example.com"
+          required
         />
+        <label className="text-md" htmlFor="password">
+          Password
+        </label>
         <input
+          className="mb-6 rounded-md border bg-inherit px-4 py-2"
           type="password"
           name="password"
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
+          placeholder="••••••••"
+          required
         />
-        {/* <button onClick={handleSignUp}>Sign up</button> */}
-        <button onClick={handleSignIn}>Sign in</button>
+        <button className="mb-2 rounded-md bg-green-700 px-4 py-2 text-foreground">
+          Sign In
+        </button>
+        <button
+          formAction={signUp}
+          className="mb-2 rounded-md border border-foreground/20 px-4 py-2 text-foreground"
+        >
+          Sign Up
+        </button>
+        {searchParams?.message && (
+          <p className="mt-4 bg-foreground/10 p-4 text-center text-foreground">
+            {searchParams.message}
+          </p>
+        )}
       </form>
-    </div>
+
+      {/* <SignInWithOAuth /> */}
+    </main>
   );
 }
