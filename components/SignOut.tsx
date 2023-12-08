@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
-import { supabase } from "@supabase/auth-ui-shared";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Out from "./icons/Out";
 
