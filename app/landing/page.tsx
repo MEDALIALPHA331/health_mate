@@ -32,13 +32,13 @@ export default async function Index() {
       </Navigation>
 
       <div className="fle max-w-4xl flex-1 flex-col gap-20 px-3 animate-in">
-        <Header />
+        <MainHeader />
       </div>
     </div>
   );
 }
 
-export function Header() {
+function MainHeader() {
   return (
     <div className="flex flex-col items-center gap-10">
       <div className="flex items-center justify-center ">
@@ -56,7 +56,7 @@ export function Header() {
   );
 }
 
-export async function AuthButton() {
+async function AuthButton() {
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
 
@@ -93,7 +93,7 @@ export async function AuthButton() {
   );
 }
 
-export function AccountBtn() {
+function AccountBtn() {
   return (
     <Link
       className="hover:bg-btn-background-hover flex items-center justify-center rounded-md border px-2 py-1"
