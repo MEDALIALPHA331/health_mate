@@ -7,6 +7,8 @@ import { Database } from "@/db/database.types";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import { Fragment } from "react";
+import Feelings from "./Feelings";
 
 export default async function Home() {
   const supabase = createServerComponentClient<Database>({ cookies });
@@ -20,15 +22,37 @@ export default async function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-4">
-      <AccountForm session={session!} />
+    <Fragment>
+      <header className="text-2xl md:text-4xl">
+        Good Afternoon 😊,
+        <br />
+        <span className="bg-gradient-to-bl from-teal-300 to-indigo-400 bg-clip-text text-transparent">
+          {session.user.email}
+        </span>
+      </header>
 
-      <Link className="" href="/account/stats">
-        Stats
-      </Link>
+      <div>
+        <h2 className="text-xl">How are you feeling today?</h2>
+        <Feelings />
+      </div>
 
-      {/* <TodoAdd />
-      <TodosList /> */}
-    </main>
+      {/* <AccountForm session={session!} /> */}
+
+      {/* <div>
+        <TodoAdd />
+        <TodosList />
+      </div> */}
+    </Fragment>
+  );
+}
+
+function SideBar() {
+  return (
+    <Link
+      className="transition-all duration-200 ease-in-out hover:translate-x-2 hover:text-indigo-400"
+      href="/account/stats"
+    >
+      Stats
+    </Link>
   );
 }

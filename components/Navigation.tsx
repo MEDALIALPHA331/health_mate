@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Navigation({
   Other,
-  children = <Button>click</Button>,
+  children,
 }: {
   children?: React.ReactNode;
   Other?: React.ReactNode;

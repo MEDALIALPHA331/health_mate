@@ -33,12 +33,12 @@ export default async function RootLayout({
   }
 
   return (
-    <main className={`bg-background text-foreground ${GeistSans.className}`}>
+    <body className={`bg-background text-foreground ${GeistSans.className} `}>
       <Navigation Other={<Notification />}>
         <SingnOut />
       </Navigation>
-      <div className="flex min-h-screen flex-col items-center">{children}</div>
-    </main>
+      <main className="flex min-h-screen flex-col p-4">{children}</main>
+    </body>
   );
 }
 
